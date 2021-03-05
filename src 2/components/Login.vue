@@ -3,25 +3,22 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="main">
-          </div>
+          <div class="main"></div>
           <div class="form">
-
             <h3 @click="showRegister">创建账户</h3>
             <transition name="slide">
-              <div v-show="isShowRegister" class="register">
+              <div v-bind:class="{show: isShowRegister}" class="register">
                 <input type="text" v-model="register.username" placeholder="用户名">
-                <input type="password" v-model="register.password" placeholder="密码">
+                <input type="password" v-model="register.password" @keyup.enter="onRegister" placeholder="密码">
                 <p v-bind:class="{error: register.isError}"> {{register.notice}}</p>
                 <div class="button" @click="onRegister">创建账号</div>
               </div>
             </transition>
-
             <h3 @click="showLogin">登录</h3>
             <transition name="slide">
-              <div v-show="isShowLogin" class="login">
+              <div v-bind:class="{show: isShowLogin}" class="login">
                 <input type="text" v-model="login.username" placeholder="输入用户名">
-                <input type="password" v-model="login.password" placeholder="密码">
+                <input type="password" v-model="login.password" @keyup.enter="onLogin" placeholder="密码">
                 <p v-bind:class="{error: login.isError}"> {{login.notice}}</p>
                 <div class="button" @click="onLogin"> 登录</div>
               </div>
@@ -30,17 +27,25 @@
         </div>
       </div>
     </div>
+
   </div>
-
-
+  </div>
 </template>
 
 <script>
-  import authorise from '@/api/authorise.js'
-  authorise.getInfo()
+
+  import Auth from '@/apis/auth'
+
+  Auth.getInfo()
     .then(data => {
       console.log(data)
     })
+
+  // request('/auth')
+  //  .then(data=>{
+  //    console.log(data)
+  //   })
+
 
   export default {
     data() {
@@ -61,31 +66,25 @@
         }
       }
     },
-
     methods: {
+
       showLogin() {
         this.isShowLogin = true
         this.isShowRegister = false
-      },
+      }
+      ,
       showRegister() {
         this.isShowLogin = false
         this.isShowRegister = true
-      },
-      checkUserName(username) {
-        return /^[\w\u4e00-\u9fa5]{3,15}$/.test(username)
-      },
-      checkPassword(password) {
-        return /^.{6,16}$/.test(password)
-        //RegExp.test()用来确认括号内的字符串是否包含符合规则中的值
-      },
+      }
+      ,
       onRegister() {
-        if (!this.checkUserName(this.register.username)) {
-
+        if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.register.username)) {
           this.register.isError = true
           this.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
           return
         }
-        if (!this.checkPassword(this.register.password)) {
+        if (!/^.{6,16}$/.test(this.register.password)) {
           this.register.isError = true
           this.register.notice = '密码长度为6~16个字符'
           return
@@ -93,21 +92,21 @@
         this.register.isError = false
         this.register.notice = ''
         console.log(`start register..., username: ${this.register.username} , password: ${this.register.password}`)
-        authorise.register({
+        Auth.register({
           username: this.register.username,
           password: this.register.password
-        }).then(res => {
-          console.log('register',res)
+        }).then(data => {
+          console.log(data)
         })
-      },
+      }
+      ,
       onLogin() {
-        //默认账户密码hunger 123456
-        if (!this.checkUserName(this.login.username)) {
+        if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.login.username)) {
           this.login.isError = true
           this.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
           return
         }
-        if (!this.checkPassword(this.login.password)) {
+        if (!/^.{6,16}$/.test(this.login.password)) {
           this.login.isError = true
           this.login.notice = '密码长度为6~16个字符'
           return
@@ -116,22 +115,19 @@
         this.login.notice = ''
 
         console.log(`start login..., username: ${this.login.username} , password: ${this.login.password}`)
-        authorise.login({
+        Auth.login({
           username: this.login.username,
           password: this.login.password
-        }).then(res => {
-            console.log('login',res)
-          })
+        }).then(data => {
+          console.log(data)
+        })
       }
-
     }
-
   }
-
 </script>
 
-<style lang="less" scoped>
-  /*<style  scoped>*/
+
+<style lang="less">
   .modal-mask {
     position: fixed;
     z-index: 100;
@@ -199,10 +195,13 @@
       .login, .register {
         padding: 0px 20px;
         border-top: 1px solid #eee;
-        /*height: 0;*/
+        height: 0;
         overflow: hidden;
-        transition: all .4s;
+        transition: height .4s;
 
+        &.show {
+          height: 193px;
+        }
 
         input {
           display: block;
@@ -232,18 +231,9 @@
         }
       }
 
-      .slide-enter-active, .slide-leave-active {
-        height: 170px;
+      .login {
+        border-top: 0;
       }
-
-      .slide-enter, .slide-leave-to {
-
-        height: 0px;
-      }
-
     }
   }
-
-
 </style>
-
