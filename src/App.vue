@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <SideBar></SideBar>
-    <router-link to="/login" class="login">登陆</router-link>
     <router-view class="some"/>
   </div>
 </template>
@@ -35,7 +34,7 @@
   }
 
   .some {
-    border: 1px solid #ff0000;
+    margin-left: 40px;
   }
 
   html, body, #app {

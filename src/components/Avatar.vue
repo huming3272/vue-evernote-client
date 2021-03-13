@@ -5,15 +5,34 @@
 </template>
 
 <script>
+  import authorise from "@/api/authorise.js"
+  import Bus from '@/support/bus.js'
   export default {
     name: "Avatar",
     data() {
       return {
         user: {
-          username: 'hunger'
+          username: '未登录'
         },
-        slug: 'H'
       }
+    },
+    computed:{
+      slug(){
+        return this.user.username.charAt(0)
+      }
+    },
+    created(){
+      Bus.$on('userInfo',(userInfo)=>{
+          this.user.username = userInfo.username
+      })
+      authorise.getInfo().then(res=>{
+        if(!res.isLogin&&this.$router.history.current.path!='/login'){
+          this.$router.push({name: 'login'})
+          //如果没有登录就让页面跳回登录页
+        }
+          this.user.username = res.data.username
+        console.log(res)
+      })
     }
   }
 </script>

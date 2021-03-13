@@ -37,6 +37,7 @@
 
 <script>
   import authorise from '@/api/authorise.js'
+  import Bus from '@/support/bus.js'
   authorise.getInfo()
     .then(data => {
       console.log(data)
@@ -48,8 +49,8 @@
         isShowLogin: true,
         isShowRegister: false,
         login: {
-          username: '',
-          password: '',
+          username: 'hunger',
+          password: '123456',
           notice: '输入用户名和密码',
           isError: false
         },
@@ -98,7 +99,13 @@
           password: this.register.password
         }).then(res => {
           console.log('register',res)
-        })
+          this.$router.push({name:'notebooks'})
+        }).catch(
+          (data)=>{
+            this.register.isError = true
+            this.register.notice = data.msg
+          }
+        )
       },
       onLogin() {
         //默认账户密码hunger 123456
@@ -121,7 +128,15 @@
           password: this.login.password
         }).then(res => {
             console.log('login',res)
-          })
+            Bus.$emit('userInfo',{username:this.login.username})
+            this.$router.push({name:'notebooks'})
+          }).catch(
+          (data)=>{
+            this.login.isError = true
+            this.login.notice = data.msg
+          }
+        )
+
       }
 
     }
