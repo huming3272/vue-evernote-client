@@ -2,7 +2,7 @@
   <div id="note" class="detail">
     <NoteSidebar @update:notes="val => notes = val"></NoteSidebar>
     <div class="note-detail">
-      <div class="note-empty" v-show="!curNote.id">请选择笔记，右上角切换预览模式</div>
+      <div class="note-empty" v-show="!curNote.id">请创建后并选择笔记</div>
       <div class="note-detail-ct" v-show="curNote.id">
         <div class="note-bar">
           <span> 创建日期: {{curNote.createdAtFriendly}}</span>

@@ -15,7 +15,7 @@ const getters = {
 
     if (!Array.isArray(state.notebooks)) {
       // console.log('1---', state.notebooks)
-      return {}
+      return '暂无笔记'
     }
     //如果notebooks没得到返回的值那其中的当前笔记curbook一定为空
 

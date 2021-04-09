@@ -3,7 +3,7 @@
     <span class="btn add-note" @click="onAddNote">添加笔记</span>
     <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
       <span class="el-dropdown-link">
-        {{curBook.title}} <i class="iconfont icon-down"></i>
+        {{curBook.title?curBook.title:'暂无笔记'}} <i class="iconfont icon-down" v-show=curBook.title></i>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item v-for="notebook in notebooks" :command="notebook.id" :key="notebook.id">{{notebook.title}}
@@ -85,33 +85,10 @@
               this.$router.replace({path: `/note?notebookId=${this.curBook.id}&noteId=${this.curNote.id}`})
             }
           })
-          // console.log('side',notebookId)
-          // notes.getAll(notebookId).then((res) => {
-          //   this.notes = res.data
-          //   // console.log('新的单个笔记', this.notes)
-          //   this.$emit('update:notes',this.notes)
-          // })
-
-
         }
-
       },
-      // addNote() {
-      //   console.log(this.curBook,{title:'新建笔记', content: ''})
-      //   notes.addNote(this.curBook.id).then((res)=>{
-      //     this.notes.unshift(res.data)
-      //     this.$message({
-      //       type: 'success',
-      //       message: res.msg
-      //     });
-      //   }).catch((err)=>{
-      //     console.error(err)
-      //   })
-      //
-      // }
     },
     created() {
-
       this.getNotebooks()
         .then(() => {
           this.setCurBook({curBookId: this.$route.query.notebookId})
