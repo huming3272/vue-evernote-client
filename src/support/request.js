@@ -43,14 +43,12 @@ let request = function(url, type = 'GET', data = {}) {
       }else {
         //不然请求失败，报个错运行reject
         console.error(res)
-        console.log('请求错误',res)
-        Message({showClose:true,message:'请求错误:'+res.data.msg,type:'error'})
+        Message({showClose:true,message:'笔记为空，亦或'+res.data.msg,type:'error'})
         reject(res.data)
       }
     }).catch(err=>{
       //promise中出错时用promise.catch捕捉
       console.error({msg: '网络异常'})
-      console.log('网络错误')
       Message({showClose:true,message:'网络错误:'+err.data.msg,type:'error'})
       reject({msg: '网络异常'})
     })

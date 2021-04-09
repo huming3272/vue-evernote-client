@@ -2,9 +2,9 @@
   <div id="sidebar">
     <Avatar></Avatar>
     <div class="icons">
-      <router-link to="/note/1" title="笔记"><i class="iconfont icon-note"></i></router-link>
+      <router-link to="/note" title="笔记"><i class="iconfont icon-note"></i></router-link>
       <router-link to="/notebooks" title="笔记本"><i class="iconfont icon-notebook"></i></router-link>
-      <router-link to="/trash/" title="回收站"><i class="iconfont icon-trash"></i></router-link>
+      <router-link to="/trash" title="回收站"><i class="iconfont icon-trash"></i></router-link>
     </div>
     <div class="logout" @click="logOut">
       <i class="iconfont icon-logout"></i>
@@ -15,7 +15,7 @@
 <script>
   import Avatar from '@/components/Avatar.vue'
   import authorise from '@/api/authorise.js'
-
+  import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'SlideBar',
     data() {
@@ -25,15 +25,35 @@
       Avatar
     },
     mounted() {
-      console.log('sideBar启动了')
+      // console.log('sideBar启动了')
     },
     methods: {
+      // logOut() {
+      //   authorise.loginOut().then(() => {
+      //     this.$router.push({name: 'login'})
+      //   })
+      // }
+      ...mapActions([
+        'loginOut'
+      ]),
       logOut() {
-        authorise.loginOut().then(() => {
-          this.$router.push({name: 'login'})
-        })
 
-
+        this.$confirm('此操作将注销账户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loginOut()
+          this.$message({
+            type: 'success',
+            message: '注销成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消注销'
+          });
+        });
       }
     }
   }
@@ -48,23 +68,19 @@
     height: 100vh;
     width: 56px;
     text-align: center;
-    background-color: #2c333c;
-    border: 1px solid yellow;
+    background-color: #226DDD;
+    /*border: 1px solid yellow;*/
 
     .icons {
       margin-top: 15px;
-
-
       a {
         padding: 6px 0;
         display: block;
       }
 
       .router-link-active {
-        background-color: #5e6266;
+        background-color: #0044AA;
       }
-
-
     }
 
 

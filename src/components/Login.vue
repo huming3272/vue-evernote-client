@@ -4,6 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="main">
+            <img :src="img" alt="">
           </div>
           <div class="form">
 
@@ -23,7 +24,7 @@
                 <input type="text" v-model="login.username" placeholder="输入用户名">
                 <input type="password" v-model="login.password" placeholder="密码">
                 <p v-bind:class="{error: login.isError}"> {{login.notice}}</p>
-                <div class="button" @click="onLogin"> 登录</div>
+                <div class="button" @click="onLogin" > 登录</div>
               </div>
             </transition>
           </div>
@@ -38,19 +39,17 @@
 <script>
   import authorise from '@/api/authorise.js'
   import Bus from '@/support/bus.js'
-  authorise.getInfo()
-    .then(data => {
-      console.log(data)
-    })
-
+  import {mapGetters,mapActions} from 'vuex'
+  import driftingBottle from '@/assets/img/bottle.jpg'
   export default {
     data() {
       return {
+        img:driftingBottle,
         isShowLogin: true,
         isShowRegister: false,
         login: {
-          username: 'hunger',
-          password: '123456',
+          username: '',
+          password: '',
           notice: '输入用户名和密码',
           isError: false
         },
@@ -64,6 +63,9 @@
     },
 
     methods: {
+      ...mapActions([
+        'Login','Register'
+      ]),
       showLogin() {
         this.isShowLogin = true
         this.isShowRegister = false
@@ -72,6 +74,7 @@
         this.isShowLogin = false
         this.isShowRegister = true
       },
+
       checkUserName(username) {
         return /^[\w\u4e00-\u9fa5]{3,15}$/.test(username)
       },
@@ -81,7 +84,6 @@
       },
       onRegister() {
         if (!this.checkUserName(this.register.username)) {
-
           this.register.isError = true
           this.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
           return
@@ -91,15 +93,15 @@
           this.register.notice = '密码长度为6~16个字符'
           return
         }
-        this.register.isError = false
-        this.register.notice = ''
-        console.log(`start register..., username: ${this.register.username} , password: ${this.register.password}`)
-        authorise.register({
+
+        this.Register({
           username: this.register.username,
           password: this.register.password
         }).then(res => {
           console.log('register',res)
-          this.$router.push({name:'notebooks'})
+          this.register.isError = false
+          this.register.notice = ''
+          this.$router.push({path:'/notebooks'})
         }).catch(
           (data)=>{
             this.register.isError = true
@@ -123,13 +125,12 @@
         this.login.notice = ''
 
         console.log(`start login..., username: ${this.login.username} , password: ${this.login.password}`)
-        authorise.login({
+        this.Login({
           username: this.login.username,
           password: this.login.password
-        }).then(res => {
-            console.log('login',res)
-            Bus.$emit('userInfo',{username:this.login.username})
-            this.$router.push({name:'notebooks'})
+        }).then(() => {
+            // Bus.$emit('userInfo',{username:this.login.username})
+            this.$router.push({path:'/notebooks'})
           }).catch(
           (data)=>{
             this.login.isError = true
@@ -137,8 +138,24 @@
           }
         )
 
+      },
+      doit(){
+        if(this.isShowRegister){
+          this.onRegister()
+          return
+        }
+        if(this.isShowLogin){
+          this.onLogin()
+          return
+        }
       }
-
+    },
+    mounted(){
+      document.body.addEventListener('keydown',(e)=>{
+        if(e.keyCode === 13){
+          this.doit()
+        }
+      },false )
     }
 
   }
@@ -176,9 +193,15 @@
     display: flex;
 
     .main {
-      flex: 1;
-      background: #36bc64 url(//cloud.hunger-valley.com/17-12-13/38476998.jpg-middle) center center no-repeat;
-      background-size: contain;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex:1;
+      background: #226DDD;
+      img{
+        width: 100%;
+        height: auto;
+      }
     }
 
     .form {
@@ -200,7 +223,7 @@
       }
 
       .button {
-        background-color: #2bb964;
+        background-color: #226DDD;
         height: 36px;
         line-height: 36px;
         text-align: center;

@@ -43,5 +43,5 @@ const notebooks = {
     return request(URL.DELETE.replace(':id', id), 'DELETE')
   }
 }
-
+window.notebooks = notebooks
 export default notebooks
