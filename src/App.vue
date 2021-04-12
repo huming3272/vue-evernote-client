@@ -14,7 +14,7 @@
       return {}
     },
     components: {
-      SideBar,
+      SideBar
     }
   }
 </script>
@@ -34,7 +34,7 @@
   }
 
   .some {
-    margin-left: 57px;
+    /*margin-left: 57px;*/
   }
 
   html, body, #app {
@@ -65,5 +65,16 @@
     border: none;
     cursor: pointer;
     display: inline-block;
+  }
+
+  @media screen and (max-width:820px){
+    .el-message{
+      width: 280px !important;
+      max-width: 300px !important;
+      min-width: 0 !important;
+    }
+    .el-message-box{
+      width: 300px !important;
+    }
   }
 </style >

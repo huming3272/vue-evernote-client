@@ -1,5 +1,8 @@
 <template>
-  <div id="sidebar">
+  <div id="sidebar" :class="fold?'fold-sidebar':''">
+    <div class="fold" @click="fold=!fold">
+      <i :class="fold?'el-icon-arrow-right':'el-icon-arrow-left'"></i>
+    </div>
     <Avatar></Avatar>
     <div class="icons">
       <router-link to="/note" title="笔记"><i class="iconfont icon-note"></i></router-link>
@@ -19,7 +22,9 @@
   export default {
     name: 'SlideBar',
     data() {
-      return {}
+      return {
+        fold: true
+      }
     },
     components: {
       Avatar
@@ -62,14 +67,22 @@
 
 <style lang="less" scoped>
 
-  #sidebar {
+
+.fold-sidebar{
+  margin: 0;
+}
+
+#sidebar {
     position: relative;
-    position: fixed;
+    /*position: fixed;*/
+    z-index:10;
     height: 100vh;
     width: 56px;
     text-align: center;
-    background-color: #226DDD;
-    /*border: 1px solid yellow;*/
+    margin-left:0;
+    transition: all 0.5s;
+    background: #226DDD;
+  /*border: 1px solid yellow;*/
 
     .icons {
       margin-top: 15px;
@@ -95,7 +108,31 @@
     .iconfont {
       color: #fff;
     }
+    .fold{
+      i{
+        font-size: 18px;
+        color:#eee;
+      }
+      display: none;
+      /*display: flex;*/
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: 20px;
+      position:absolute;
+      right: -20px;
+      top: 0;
+      background:#226DDD;
+    }
   }
+@media screen and (max-width: 820px){
 
+  .fold-sidebar{
+    margin-left: -56px !important;
+  }
+  .fold{
+    display: flex !important;
+  }
+}
 
 </style>

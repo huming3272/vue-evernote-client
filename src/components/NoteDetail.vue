@@ -9,8 +9,11 @@
           <span> 更新日期: {{curNote.updatedAtFriendly}}</span>
           <span> {{statusText}}</span>
           <span :class="{previewType:true,editor:isShowPreview,pre:!isShowPreview}">{{preview}}</span>
-          <span class="iconfont el-icon-delete" @click="onDeleteNote"></span>
-          <i class="iconfont" :class="isShowPreview ? 'el-icon-edit':'el-icon-view'" @click="previewSwitch"></i>
+          <div class="iconWrapper">
+            <span class="iconfont el-icon-delete" @click="onDeleteNote"></span>
+            <i class="iconfont" :class="isShowPreview ? 'el-icon-edit':'el-icon-view'" @click="previewSwitch"></i>
+          </div>
+
         </div>
         <div class="note-title">
           <input type="text" v-model:value="curNote.title" @input="onUpdateNote" @keydown="statusText='正在输入...'"
@@ -190,4 +193,5 @@
     background-color: #fff;
     flex: 1;
   }
+
 </style>

@@ -1,6 +1,12 @@
 <template>
   <div id="trash" class="detail">
-    <div class="note-sidebar">
+    <div class="note-sidebar" :class="fold?'do-fold':''">
+      <div class="fold" @click="fold=!fold">
+        <i :class="fold?'el-icon-arrow-right':'el-icon-arrow-left'"></i>
+      </div>
+      <div class="notebook-title">
+        回收站
+      </div>
       <div class="menu">
         <div>更新时间</div>
         <div>标题</div>
@@ -22,8 +28,10 @@
           <span> 更新日期: {{curTrashNote.updatedAtFriendly}}</span>
           <span>|</span>
           <span>所属笔记本:{{belongTo}}</span>
-          <a class="btn action" @click="onRevertNote">恢复笔记</a>
-          <a class="btn action" @click="onDeleteTrash">彻底删除</a>
+          <div class="btnWrapper">
+            <a class="btn action" @click="onRevertNote">恢复笔记</a>
+            <a class="btn action" @click="onDeleteTrash">彻底删除</a>
+          </div>
         </div>
         <div class="note-title">
           <span>{{curTrashNote.title}}</span>
@@ -50,6 +58,7 @@
       return {
         msg: '回收站',
         // previewContent: '',
+        fold: true,
       }
     },
     methods: {
@@ -121,7 +130,7 @@
           this.setCurTrashNoteId({curTrashNoteId: this.$route.query.noteId})
           if (this.curTrashNote.notebookId && this.curTrashNote.id) {
             this.$router.replace({path: `/trash?notebookId=${this.curTrashNote.notebookId}&noteId=${this.curTrashNote.id}`})
-          } else{
+          } else {
             this.$router.replace({path: '/trash'})
           }
         })
@@ -136,6 +145,10 @@
   @import url(../assets/css/note-sidebar.less);
   @import url(../assets/css/note-detail.less);
 
+  .do-fold {
+    margin-left: 0px;
+  }
+
   #trash {
     display: flex;
     align-items: stretch;
@@ -144,11 +157,47 @@
   }
 
   .note-bar {
-    .action {
+    .btnWrapper {
       float: right;
-      margin-left: 10px;
-      padding: 2px 4px;
-      font-size: 12px;
+      .action {
+        margin-left: 10px;
+        padding: 2px 4px;
+        font-size: 12px;
+
+      }
+    }
+
+  }
+
+  .note-sidebar {
+    position: relative;
+
+    .fold {
+      i {
+        font-size: 18px;
+        color: #333;
+      }
+      display:none;
+      /*display: flex;*/
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: 20px;
+      position: absolute;
+      right: -21px;
+      top: 44px;
+      background: #eee;
+    }
+  }
+  @media screen and (max-width: 820px){
+    .fold{
+      display: flex !important;
+    }
+    .do-fold{
+      margin-left: -230px !important;
+    }
+    .note-sidebar{
+      width: 230px;
     }
   }
 </style>

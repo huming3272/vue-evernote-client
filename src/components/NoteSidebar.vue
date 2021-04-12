@@ -1,5 +1,8 @@
 <template>
-  <div class="note-sidebar">
+  <div class="note-sidebar ":class="fold?'do-fold':''">
+    <div class="fold" @click="fold=!fold">
+      <i :class="fold?'el-icon-arrow-right':'el-icon-arrow-left'"></i>
+    </div>
     <span class="btn add-note" @click="onAddNote">添加笔记</span>
     <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
       <span class="el-dropdown-link">
@@ -40,6 +43,7 @@
         // notebooks: [],
         // notes: [],
         // curBook: {},
+        fold: true,
       }
     },
     computed: {
@@ -109,6 +113,35 @@
 
 <style lang="less" scoped>
   @import url(../assets/css/note-sidebar.less);
+  .do-fold{
+    margin-left: 0;
+  }
 
+  .fold{
+    i{
+      font-size: 18px;
+      color:#333;
+    }
+    display:none;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 20px;
+    position:absolute;
+    right: -21px;
+    top: 44px;
+    background: #eee;
+  }
+  @media screen and (max-width: 820px){
+    .fold{
+      display: flex !important;
+    }
+    .do-fold{
+      margin-left: -230px !important;
+    }
+    .note-sidebar{
+      width: 230px;
+    }
+  }
 </style>
 
