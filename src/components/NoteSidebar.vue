@@ -114,7 +114,7 @@
 <style lang="less" scoped>
   @import url(../assets/css/note-sidebar.less);
   .do-fold{
-    margin-left: 0;
+    left: 0px !important;
   }
 
   .fold{
@@ -137,10 +137,11 @@
       display: flex !important;
     }
     .do-fold{
-      margin-left: -230px !important;
+      left: -230px !important;
     }
     .note-sidebar{
       width: 230px;
+      position: absolute !important;
     }
   }
 </style>

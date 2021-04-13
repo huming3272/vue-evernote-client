@@ -146,7 +146,7 @@
   @import url(../assets/css/note-detail.less);
 
   .do-fold {
-    margin-left: 0px;
+    left: 0px !important;
   }
 
   #trash {
@@ -194,10 +194,11 @@
       display: flex !important;
     }
     .do-fold{
-      margin-left: -230px !important;
+      left: -230px !important;
     }
     .note-sidebar{
       width: 230px;
+      position: absolute;
     }
   }
 </style>

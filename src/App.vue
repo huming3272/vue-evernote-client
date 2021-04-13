@@ -29,6 +29,7 @@
   }
 
   #app {
+    position: relative;
     display: flex;
     align-items: stretch;
   }
