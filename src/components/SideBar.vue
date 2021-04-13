@@ -50,6 +50,7 @@
           type: 'warning'
         }).then(() => {
           this.loginOut()
+          this.fold = true;
           this.$message({
             type: 'success',
             message: '注销成功!'
@@ -103,7 +104,7 @@
 
     .logout {
       position: absolute;
-      bottom: 20px;
+      bottom: 5%;
       width: 100%;
       text-align: center;
       cursor: pointer;
