@@ -129,19 +129,20 @@
 
       onUpdateNote: _.debounce(function () {
         if(!this.curNote.id){
-          console.log('已拦截')
+          console.error('已拦截')
           return
         }
         this.updateNote({
           noteId: this.curNote.id, title: this.curNote.title, content: this.curNote.content,
         })
-          this.statusText = '已保存'
-
+          setTimeout(()=>{
+            this.statusText = '已保存'
+          } ,1000)
           , 300
       })
       ,
       previewSwitch() {
-        console.log('编辑',this.curNote.content)
+
         this.isShowPreview = !this.isShowPreview
         this.preview = this.isShowPreview ? '编辑模式' : '预览模式'
       }

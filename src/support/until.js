@@ -3,6 +3,7 @@ let friendlyDate = function (dateStr) {
   let now = Date.parse(new Date())
   let space = now - formatDate
   let display = '刚才'
+
   switch (true) {
     case space < 1000 * 60:
       display = '刚刚'
